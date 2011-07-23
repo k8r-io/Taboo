@@ -1,0 +1,17 @@
+The config.yml should be created and contain something similar to the following:
+
+lightning:
+- pwn
+kick:
+- candlejack
+giant:
+- synergy
+zombies:
+- Voldemort
+
+Where pwn, candlejack, synergy and Voldemort are words you want to make taboo. The YAML nodes are the punishements,
+
+lightning: strike the player with a bolt of lightning
+kick: kick the player
+giant: spawn a giant at the players location
+zombies: spawn three zombies at the players location
