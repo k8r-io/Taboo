@@ -1,3 +1,3 @@
 name: Taboo
-main: com.asciiduck.taboo.Taboo
+main: com.asciiduck.taboo.TabooPlugin
 version: 0.1

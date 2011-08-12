@@ -1,16 +1,28 @@
 The config.yml must be created manually at the time being (Taboo/config.yml in your plugins directory) and contain something similar to the following:
 
-lightning:
-- pwn
-- umad
-kick:
-- candlejack
-giant:
-- synergy
-zombies:
-- Voldemort
+<tabooname>:
+    actions:
+    - <action1>
+    - <action2>
+    patterns:
+    - <bannedword1>
+    - <bannedword2>
+    permission: <permissionNode>
+    censor: <true|false>
 
-Where pwn, candlejack, synergy and Voldemort are words you want to make taboo. The YAML nodes are the punishements,
+Permission and censor are optional. The permissionNode parameter will be appended with "taboo.", so if the permsission parameter is "users" then the permission node will be "taboo.users". The taboo group will apply to users with the "taboo.users" permission given to them. An example is:
+
+politics:
+    actions:
+    - lightning
+    patterns:
+    - obama
+    - glenn beck
+    censor: true
+    permission: nopolitics
+
+
+The possible actions are:
 
 lightning: strike the player with a bolt of lightning
 kick: kick the player
@@ -18,9 +30,8 @@ giant: spawn a giant at the players location
 zombies: spawn three zombies at the players location
 
 
-You do not need to specify all nodes.
-
-Each word will be search for in everything said by players. The search will ignore case and will match parts of words. For example if you set "pass" as taboo, "password" would also be taboo. To avoid things like this you can add entries like this (note the spaces)
-zombies:
-- ' pass '
+Patterns:
+Each word will be search for in everything said by players. The search will ignore case and will match parts of words. For example if you set "pass" as a pattern, "password" would also be matched. To avoid things like this you can add entries like this (note the spaces)
+    patterns:
+    - ' pass '
 

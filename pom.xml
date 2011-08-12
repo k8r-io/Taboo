@@ -24,7 +24,7 @@
     <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>bukkit</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>RB1000</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
