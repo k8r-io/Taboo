@@ -1,14 +1,12 @@
 package com.asciiduck.taboo;
-import org.bukkit.plugin.java.JavaPlugin;
+import com.asciiduck.taboo.data.Taboo;
+import com.asciiduck.taboo.data.TabooSubstitution;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permissible;
+
 import java.util.regex.*;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class TabooChatListener extends PlayerListener {
@@ -23,19 +21,22 @@ public class TabooChatListener extends PlayerListener {
 		for(Taboo t : plugin.tConfig.getTaboos())
 		{
 			Matcher m = t.pattern.matcher(event.getMessage());
-			if((t.permission==null || event.getPlayer().hasPermission(t.permission)) && m.find())
+			if(tabooApplies(t,event.getPlayer()) && m.find())
 			{
 				plugin.log.info(event.getPlayer().getName()+" has spoken taboo.");
 				takeAction(t,event.getPlayer());
-				if(t.censor) {
-					event.setMessage(m.replaceAll("****"));
-				}
+				for(TabooSubstitution ts:t.substitutions) {
+                    Matcher mts = ts.replacePattern.matcher(event.getMessage());
+                    if(mts.find()) {
+                        event.setMessage(mts.replaceAll(ts.replaceWith));
+
+                    }
+                }
 			}
 		}
 	}
 
-	private void takeAction(Taboo t, Player player)
-	{
+	private void takeAction(Taboo t, Player player)	{
 		for(String act:t.actions) {
 			if(act.equals("lightning")) {
 				player.getWorld().strikeLightning(player.getLocation());
@@ -51,8 +52,20 @@ public class TabooChatListener extends PlayerListener {
 			else if(act.equals("kick")) {
 				player.kickPlayer("You spoke taboo.");
 			}
+            else if(act.equals("announce")) {
+                player.getServer().broadcastMessage("Player "+player.getName()+" broke the taboo '"+t.name);
+            }
+            else if(act.equals("explode")) {
+                player.getWorld().createExplosion(player.getLocation(),2);
+            }
+            else if(act.equals("day")) {
+                player.getWorld().setTime(8000);
+            }
 		}
 	}
 
-
+    private boolean tabooApplies(Taboo t, Player p) {
+        return ((t.includePermission == null || p.hasPermission(t.includePermission)) &&
+                (t.excludePermission == null || !p.hasPermission(t.excludePermission)));
+    }
 }

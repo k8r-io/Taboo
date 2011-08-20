@@ -1,5 +1,9 @@
-The config.yml must be created manually at the time being (Taboo/config.yml in your plugins directory) and contain something similar to the following:
+====Configuration===
+The config.yml must be created manually at the time being (Taboo/config.yml in your plugins directory).
 
+The format is as follows:
+
+[code]
 <tabooname>:
     actions:
     - <action1>
@@ -7,11 +11,36 @@ The config.yml must be created manually at the time being (Taboo/config.yml in y
     patterns:
     - <bannedword1>
     - <bannedword2>
-    permission: <permissionNode>
-    censor: <true|false>
+    excludePermission: <permissionNode>
+    includePermission: <permissionNode>
+[/code]
+==TabooName==
+The tabooname can be anything and is not used by any part of the code. It's just there to help you organize things. It is required.
 
-Permission and censor are optional. The permissionNode parameter will be appended with "taboo.", so if the permsission parameter is "users" then the permission node will be "taboo.users". The taboo group will apply to users with the "taboo.users" permission given to them. An example is:
+==Actions==
+These list what happens when someone breaks the taboo. The current actions are:
+lightning: strike the player with a bolt of lightning
+kick: kick the player
+giant: spawn a giant at the players location
+zombies: spawn three zombies at the players location
+explode: an explosion at the player's position, half the strength of TNT
 
+==Patterns==
+These are the words that are searched for. Each word is searched for in a player's message, ignoring case.
+If you set "word" to be taboo, it will match against "sword","password","crossword", etc. If you want it to only match word, define as follows:
+        - '(^|\W)word(\W|$)'
+Also, you can define a pattern that will replace the taboo word with another word. To do this define the pattern like so:
+        - 's/rofl/rolling on the floor laughing/'
+This will replace "rofl" with rolling on the floor laughing in the player's message before it is displayed.
+
+==Permissions==
+Permissions are checked using the new, built in Bukkit Permissions. There are no plans to make this compatible with older permissions plugins.
+The node you specify will be prepended with "taboo.", so if you set the excludePermission to be "admin", the permission a user would need is "taboo.admin".
+If no includePermission is specified it will default to applying to everyone.
+
+
+==Example===
+[code]
 politics:
     actions:
     - lightning
@@ -20,18 +49,5 @@ politics:
     - glenn beck
     censor: true
     permission: nopolitics
-
-
-The possible actions are:
-
-lightning: strike the player with a bolt of lightning
-kick: kick the player
-giant: spawn a giant at the players location
-zombies: spawn three zombies at the players location
-
-
-Patterns:
-Each word will be search for in everything said by players. The search will ignore case and will match parts of words. For example if you set "pass" as a pattern, "password" would also be matched. To avoid things like this you can add entries like this (note the spaces)
-    patterns:
-    - ' pass '
+[/code]
 
