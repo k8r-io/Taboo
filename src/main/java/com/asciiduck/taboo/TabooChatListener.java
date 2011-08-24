@@ -17,7 +17,6 @@ public class TabooChatListener extends PlayerListener {
 	}
 
 	public void onPlayerChat(PlayerChatEvent event) {
-		plugin.log.info("Doing onPlayerChat in TCL");
 		for(Taboo t : plugin.tConfig.getTaboos())
 		{
 			Matcher m = t.pattern.matcher(event.getMessage());
